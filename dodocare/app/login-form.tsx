@@ -1,9 +1,11 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 
+
 export default function LoginForm() {
   return (
     <View style={styles.container}>
+      
       <Text style={styles.title}>Iniciar Sesión</Text>
 
       <TextInput
@@ -37,7 +39,7 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1f2a44',
+    backgroundColor: '#2D3748',
     justifyContent: 'center',
     padding: 20,
   },
