@@ -5,7 +5,8 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       {/* Fondo superior */}
-      <View style={styles.topBackground} />
+      <View style={styles.topBackground}>
+      </View>
 
       {/* Cuadro blanco con el logo y los botones */}
       <View style={styles.whiteBox}>
@@ -17,7 +18,7 @@ export default function LoginScreen() {
           />
         </View>
 
-        <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
+<Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
 
         <TouchableOpacity 
           style={styles.primaryButton}
@@ -27,6 +28,12 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity 
+          style={styles.secondaryButton}
+          onPress={() => router.push('/register')}
+        >
+          <Text style={styles.buttonText}>Crear Cuenta</Text>
+        </TouchableOpacity>
+ <TouchableOpacity 
           style={styles.guestButton}
           onPress={() => router.replace('/(tabs)/home')}
         >
@@ -34,9 +41,11 @@ export default function LoginScreen() {
         </TouchableOpacity>
       </View>
     </View>
+
   );
 }
 
+// Definición completa del objeto styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -52,7 +61,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  whiteBox: {
+  title: {
+    color: "#1f2a44",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+whiteBox: {
     backgroundColor: "white",
     width: "90%",
     padding: 20,
@@ -65,6 +79,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
   },
+
   logoContainer: {
     width: 150,
     height: 150,
@@ -84,6 +99,16 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#4CAF50',
+    padding: 16,
+    borderRadius: 10,
+    width: '100%',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  secondaryButton: {
+    backgroundColor: '#3B82F6',
+    borderWidth: 2,
+    borderColor: '#3B82F6',
     padding: 16,
     borderRadius: 10,
     width: '100%',
