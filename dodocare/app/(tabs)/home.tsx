@@ -1,36 +1,55 @@
-// app/(tabs)/home.tsx
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { router } from 'expo-router'; // Asegúrate de tener esta importación
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { router } from 'expo-router';
+import Background from '../../assets/svg/Background2';
 
 export default function Home() {
   const handleLogout = () => {
-    router.replace('/login'); // Redirige al login
+    router.replace('/login');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>¡Bienvenido Alejandro!</Text>
-      <Text style={styles.subTitle}>Servicios</Text>
+    <View style={{ flex: 1 }}>
+      <Background style={StyleSheet.absoluteFill} />
+      <View style={styles.container}>
+        <Image 
+          source={require('@/assets/images/logododo.jpeg')} 
+          style={styles.logo}
+          resizeMode="cover"
+        />
 
-      <View style={styles.grid}>
-        {[
-          'Agendar cita',
-          'Historial médico',
-          'Directorio médico',
-          'Recetas médicas',
-          'Incapacidades',
-          'Información del hospital',
-        ].map((item, index) => (
-          <TouchableOpacity key={index} style={styles.serviceBox}>
-            <Text style={styles.boxText}>{item}</Text>
-          </TouchableOpacity>
-        ))}
+        {/* Bienvenida con ícono */}
+        <View style={styles.welcomeCard}>
+          <Image
+            source={require('@/assets/images/WelcomeIcon.png')} //Usa aquí tu ícono
+            style={styles.welcomeIcon}
+          />
+          <Text style={styles.welcomeText}>
+            ¡Bienvenido{'\n'}Alejandro!
+          </Text>
+        </View>
+
+        <Text style={styles.subTitle}>Servicios</Text>
+
+        <View style={styles.grid}>
+          {[
+            'Agendar cita',
+            'Historial médico',
+            'Directorio médico',
+            'Recetas médicas',
+            'Incapacidades',
+            'Información del hospital',
+          ].map((item, index) => (
+            <TouchableOpacity key={index} style={styles.serviceBox}>
+              <Text style={styles.boxText}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutText}>Salir</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-        <Text style={styles.logoutText}>Salir</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -38,16 +57,42 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2D3748',
     padding: 20,
     alignItems: 'center',
   },
-  welcome: {
+  logo: {
+    width: 100,
+    height: 120,
+    marginBottom: 20,
+    alignSelf: 'flex-start',
+    borderRadius: 300,
+    borderWidth: 3,
+    borderColor: '#ffffff',
+  },
+
+  // Nuevo estilo para tarjeta de bienvenida
+  welcomeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 12,
+    borderRadius: 20,
+    marginBottom: 20,
+    alignSelf: 'center',
+    paddingHorizontal: 16,
+  },
+  welcomeIcon: {
+    width: 40,
+    height: 40,
+    marginRight: 12,
+  },
+  welcomeText: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 20,
+    color: '#000',
+    lineHeight: 22,
   },
+
   subTitle: {
     fontSize: 18,
     fontWeight: 'bold',
