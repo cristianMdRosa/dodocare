@@ -1,37 +1,51 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import { router } from 'expo-router';
+import Background from '../assets/svg/Background'; // Ajusta esta ruta si es diferente
 
-
-export default function LoginForm() {
+export default function LoginScreen() {
   return (
-    <View style={styles.container}>
-      
-      <Text style={styles.title}>Iniciar Sesión</Text>
+    <View style={{ flex: 1 }}>
+      <Background style={StyleSheet.absoluteFill} />
 
-      <TextInput
-        placeholder="Correo electrónico"
-        style={styles.input}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-      />
+      <View style={styles.container}>
+        <Image 
+          source={require('@/assets/images/logododo.jpeg')} 
+          style={styles.logo}
+          resizeMode="cover"
+        />
 
-      <TextInput
-        placeholder="Contraseña"
-        style={styles.input}
-        placeholderTextColor="#999"
-        secureTextEntry
-      />
+        <Text style={styles.title}>Iniciar Sesión</Text>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Ingresar</Text>
-      </TouchableOpacity>
+        <TextInput
+          placeholder="Correo electrónico"
+          style={styles.input}
+          placeholderTextColor="#999"
+          keyboardType="email-address"
+        />
 
-      <TouchableOpacity 
-        style={styles.secondaryButton}
-        onPress={() => router.back()}
-      >
-        <Text style={styles.secondaryButtonText}>Volver al inicio</Text>
-      </TouchableOpacity>
+        <TextInput
+          placeholder="Contraseña"
+          style={styles.input}
+          placeholderTextColor="#999"
+          secureTextEntry
+        />
+        <TouchableOpacity style={styles.secondaryButton}
+          onPress={() => router.push('/register')}>
+          <Text style={styles.secondaryButtonText}>¿Aún no tienes cuenta? Crear Cuenta</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Ingresar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={styles.secondaryButton}
+          onPress={() => router.back()}
+        >
+          <Text style={styles.secondaryButtonText}>Volver al inicio</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -39,13 +53,21 @@ export default function LoginForm() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2D3748',
     justifyContent: 'center',
     padding: 20,
   },
+  logo: {
+    width: 240,
+    height: 340,
+    marginBottom: 35,
+    alignSelf: 'flex-start',
+    borderRadius: 300,
+    borderWidth: 3,
+    borderColor: '#ffffff',
+  },
   title: {
-    fontSize: 24,
-    color: '#fff',
+    fontSize: 30,
+    color: '#ffff',
     marginBottom: 30,
     textAlign: 'center',
   },
@@ -71,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   secondaryButtonText: {
-    color: '#4CAF50',
+    color: '#ffff',
     textDecorationLine: 'underline',
-  }
+  },
 });
