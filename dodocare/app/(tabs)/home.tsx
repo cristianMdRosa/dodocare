@@ -1,8 +1,13 @@
 // app/(tabs)/home.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router'; // Asegúrate de tener esta importación
 
 export default function Home() {
+  const handleLogout = () => {
+    router.replace('/login'); // Redirige al login
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>¡Bienvenido Alejandro!</Text>
@@ -22,6 +27,10 @@ export default function Home() {
           </TouchableOpacity>
         ))}
       </View>
+
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Text style={styles.logoutText}>Salir</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -70,5 +79,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#1f2a44',
     textAlign: 'center',
+  },
+  logoutButton: {
+    marginTop: 30,
+    backgroundColor: '#3B82F6',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+  },
+  logoutText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
