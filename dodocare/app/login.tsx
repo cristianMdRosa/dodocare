@@ -30,11 +30,13 @@ export default function LoginScreen() {
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.guestButton}
-        onPress={() => router.replace('/(tabs)')}
-      >
-        <Text style={styles.guestButtonText}>Ingresar como invitado</Text>
-      </TouchableOpacity>
+  style={styles.guestButton}
+  onPress={() => router.replace('/(tabs)/home')}
+>
+  <Text style={styles.guestButtonText}>Ingresar como invitado</Text>
+</TouchableOpacity>
+
+
     </View>
   );
 }
