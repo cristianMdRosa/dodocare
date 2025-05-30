@@ -1,9 +1,19 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { router } from 'expo-router';
+import Background from '../assets/svg/Background'; // Ajusta esta ruta si es diferente
 
 export default function Register() {
   return (
+    <View style={{ flex: 1 }}>
+      <Background style={StyleSheet.absoluteFill} />
+
     <View style={styles.container}>
+       <Image 
+                source={require('@/assets/images/logododo.jpeg')} 
+                style={styles.logo}
+                resizeMode="cover"
+              />
+
       <Text style={styles.title}>Crear Cuenta</Text>
 
       {/* Campos del formulario */}
@@ -26,6 +36,10 @@ export default function Register() {
         placeholderTextColor="#999"
         secureTextEntry
       />
+      <TouchableOpacity style={styles.backButton}
+                onPress={() => router.push('/login-form')}>
+                <Text style={styles.backButtonText}>¿Ya tienes cuenta? Inicia Sesión</Text>
+              </TouchableOpacity>
 
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Registrarse</Text>
@@ -38,20 +52,29 @@ export default function Register() {
         <Text style={styles.backButtonText}>Volver al inicio</Text>
       </TouchableOpacity>
     </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1f2a44',
     justifyContent: 'center',
     padding: 20,
+  },
+  logo: {
+    width: 240,
+    height: 340,
+    marginBottom: 45,
+    alignSelf: 'flex-start',
+    borderRadius: 300,
+    borderWidth: 3,
+    borderColor: '#ffffff',
   },
   title: {
     fontSize: 24,
     color: '#fff',
-    marginBottom: 30,
+    marginBottom: 15,
     textAlign: 'center',
     fontWeight: 'bold',
   },
@@ -59,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 15,
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: 10,
     fontSize: 16,
   },
   button: {
@@ -75,11 +98,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   backButton: {
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
   },
   backButtonText: {
-    color: '#4CAF50',
+    color: '#ffffff',
     fontSize: 16,
     textDecorationLine: 'underline',
   },
