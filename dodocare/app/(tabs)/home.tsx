@@ -25,7 +25,7 @@ export default function Home() {
             style={styles.welcomeIcon}
           />
           <Text style={styles.welcomeText}>
-            ¡Bienvenido{'\n'}Alejandro!
+            ¡Bienvenido{'\n'}Invitado!
           </Text>
         </View>
 
