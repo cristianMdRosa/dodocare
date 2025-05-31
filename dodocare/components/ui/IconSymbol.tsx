@@ -1,41 +1,85 @@
-// Fallback for using MaterialIcons on Android and web.
-
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight, SymbolViewProps } from 'expo-symbols';
 import { ComponentProps } from 'react';
-import { OpaqueColorValue, type StyleProp, type TextStyle } from 'react-native';
+import { OpaqueColorValue, StyleProp, TextStyle } from 'react-native';
 
-type IconMapping = Record<SymbolViewProps['name'], ComponentProps<typeof MaterialIcons>['name']>;
-type IconSymbolName = keyof typeof MAPPING;
+// Define todos los íconos que necesitas en tu app
+type AppIcons = 
+  | 'calendar'         // Agendar cita
+  | 'medical-bag'      // Historial médico (usar 'medical-services' en Material)
+  | 'people'           // Directorio médico
+  | 'medication'       // Recetas médicas
+  | 'healing'          // Incapacidades
+  | 'local-hospital'   // Información del hospital
+  | 'logout'           // Botón de salir
+  | 'home'             // Inicio
+  | 'send'             // Explorar
+  | 'person'           // Perfil
+  | 'chevron-left'     // Navegación
+  | 'info'             // Información
+  | 'settings'         // Configuración
+  | 'notifications';   // Notificaciones
 
-/**
- * Add your SF Symbols to Material Icons mappings here.
- * - see Material Icons in the [Icons Directory](https://icons.expo.fyi).
- * - see SF Symbols in the [SF Symbols](https://developer.apple.com/sf-symbols/) app.
- */
-const MAPPING = {
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-} as IconMapping;
+// Mapeo de nombres personalizados a Material Icons
+const ICON_MAPPING: Record<AppIcons, ComponentProps<typeof MaterialIcons>['name']> = {
+  'calendar': 'calendar-today',
+  'medical-bag': 'medical-services',
+  'people': 'people',
+  'medication': 'medication',
+  'healing': 'healing',
+  'local-hospital': 'local-hospital',
+  'logout': 'logout',
+  'home': 'home',
+  'send': 'send',
+  'person': 'person',
+  'chevron-left': 'chevron-left',
+  'info': 'info',
+  'settings': 'settings',
+  'notifications': 'notifications'
+};
 
-/**
- * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.
- * This ensures a consistent look across platforms, and optimal resource usage.
- * Icon `name`s are based on SF Symbols and require manual mapping to Material Icons.
- */
 export function IconSymbol({
   name,
   size = 24,
   color,
   style,
+  weight,
 }: {
-  name: IconSymbolName;
+  name: AppIcons;
   size?: number;
   color: string | OpaqueColorValue;
   style?: StyleProp<TextStyle>;
-  weight?: SymbolWeight;
+  weight?: 'unspecified' | 'ultralight' | 'thin' | 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'heavy' | 'black';
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+  return (
+    <MaterialIcons 
+      name={ICON_MAPPING[name]} 
+      size={size} 
+      color={color} 
+      style={[
+        style,
+        weight && { fontWeight: weightToFontWeight(weight) }
+      ]}
+    />
+  );
 }
+
+// Helper para convertir peso de SF Symbol a fontWeight
+function weightToFontWeight(
+  weight: 'unspecified' | 'ultralight' | 'thin' | 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'heavy' | 'black'
+): TextStyle['fontWeight'] {
+  const mapping = {
+    'unspecified': undefined,
+    'ultralight': '200',
+    'thin': '300',
+    'light': '300',
+    'regular': '400',
+    'medium': '500',
+    'semibold': '600',
+    'bold': '700',
+    'heavy': '800',
+    'black': '900',
+  };
+  return mapping[weight];
+}
+
+export type IconSymbolName = AppIcons;
