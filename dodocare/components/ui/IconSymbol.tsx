@@ -63,21 +63,21 @@ export function IconSymbol({
   );
 }
 
-// Helper para convertir peso de SF Symbol a fontWeight
+// Helper para convertir peso de SF Symbol a fontWeight compatible con React Native
 function weightToFontWeight(
   weight: 'unspecified' | 'ultralight' | 'thin' | 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'heavy' | 'black'
 ): TextStyle['fontWeight'] {
-  const mapping = {
+  const mapping: Record<typeof weight, TextStyle['fontWeight']> = {
     'unspecified': undefined,
-    'ultralight': '200',
-    'thin': '300',
-    'light': '300',
-    'regular': '400',
-    'medium': '500',
-    'semibold': '600',
-    'bold': '700',
-    'heavy': '800',
-    'black': '900',
+    'ultralight': 200,
+    'thin': 300,
+    'light': 300,
+    'regular': 400,
+    'medium': 500,
+    'semibold': 600,
+    'bold': 700,
+    'heavy': 800,
+    'black': 900,
   };
   return mapping[weight];
 }
