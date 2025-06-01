@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,39 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function DirectoryScreen() {
   const navigation = useNavigation();
+  const [search, setSearch] = useState('');
+
+  const doctors = [
+    {
+      name: 'Dr. Alexis Benitez Hernandez',
+      specialty: 'Médico Internista',
+      address: 'Clínica Central, Calle 5, San Miguel',
+      image: require('../../assets/images/Dr1.webp'),
+    },
+    {
+      name: 'Dr. Gilberto Edmundo de Evián',
+      specialty: 'Ginecólogo-Obstetra',
+      address: 'Hospital de la Mujer, Av. Roosevelt, San Miguel',
+      image: require('../../assets/images/Dr2.jpg'),
+    },
+    {
+      name: 'Dr. Enrique Guerrero Perla',
+      specialty: 'Cirujano General',
+      address: 'Centro Médico El Salvador, Col. Médica',
+      image: require('../../assets/images/Dr3.jpg'),
+    },
+    {
+      name: 'Dra. Jackeline Lissbeth Flores Hernández',
+      specialty: 'Ginecología Obstetra',
+      address: 'Hospital Materno Infantil, Calle Rubén Darío',
+      image: require('../../assets/images/Dr2.jpg'),
+    },
+  ];
+
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(search.toLowerCase()) ||
+    doctor.specialty.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <ScrollView style={styles.container}>
@@ -23,22 +56,22 @@ export default function DirectoryScreen() {
       {/* Barra de búsqueda */}
       <TextInput
         style={styles.searchBar}
-        placeholder="Escribe la especialidad..."
+        placeholder="Escribe la especialidad o nombre..."
         placeholderTextColor="#888"
+        value={search}
+        onChangeText={setSearch}
       />
 
-      <Text style={styles.filterText}>Filtrado por: Especialidad</Text>
+      <Text style={styles.filterText}>Filtrado por: Especialidad o Nombre</Text>
 
       {/* Lista de doctores */}
-      {doctors.map((doctor, index) => (
+      {filteredDoctors.map((doctor, index) => (
         <View key={index} style={styles.card}>
           <Image source={doctor.image} style={styles.avatar} />
           <View style={styles.info}>
             <Text style={styles.name}>{doctor.name}</Text>
             <Text style={styles.specialty}>{doctor.specialty}</Text>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Programar cita</Text>
-            </TouchableOpacity>
+            <Text style={styles.address}>{doctor.address}</Text>
           </View>
         </View>
       ))}
@@ -51,37 +84,10 @@ export default function DirectoryScreen() {
   );
 }
 
-const doctors = [
-  {
-    name: 'Dr. Alexis Benitez Hernandez',
-    specialty: 'Médico Internista',
-    address: 'Clínica Central, Calle 5, San Miguel',
-    image: require('../../assets/images/Dr1.webp'),
-  },
-  {
-    name: 'Dr. Gilberto Edmundo de Evián',
-    specialty: 'Ginecólogo-Obstetra',
-    address: 'Hospital de la Mujer, Av. Roosevelt, San Miguel',
-    image: require('../../assets/images/Dr2.jpg'),
-  },
-  {
-    name: 'Dr. Enrique Guerrero Perla',
-    specialty: 'Cirujano General',
-    address: 'Centro Médico El Salvador, Col. Médica',
-    image: require('../../assets/images/Dr3.jpg'),
-  },
-  {
-    name: 'Dra. Jackeline Lissbeth Flores Hernández',
-    specialty: 'Ginecología Obstetra',
-    address: 'Hospital Materno Infantil, Calle Rubén Darío',
-    image: require('../../assets/images/Dr2.jpg'),
-  },
-];
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1f2a44', // Fondo azul oscuro
+    backgroundColor: '#1f2a44',
     padding: 16,
   },
   emergencyButton: {
@@ -140,18 +146,11 @@ const styles = StyleSheet.create({
   specialty: {
     fontSize: 14,
     color: '#555',
-    marginBottom: 8,
   },
-  button: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  address: {
+    fontSize: 13,
+    color: '#777',
+    marginTop: 4,
   },
   backButton: {
     backgroundColor: '#4CAF50',

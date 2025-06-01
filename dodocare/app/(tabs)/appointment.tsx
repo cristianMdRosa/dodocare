@@ -1,36 +1,67 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
 
+const doctors = [
+  {
+    name: 'Dr. Alexis Benitez Hernandez',
+    specialty: 'Neumólogo Internista',
+    image: require('../../assets/images/Dr1.webp'),
+  },
+  {
+    name: 'Dr. Gilberto Edmundo de Evián',
+    specialty: 'Ginecólogo-Obstetra',
+    image: require('../../assets/images/Dr2.jpg'),
+  },
+  {
+    name: 'Dr. Enrique Guerrero Perla',
+    specialty: 'Cirujano General',
+    image: require('../../assets/images/Dr3.jpg'),
+  },
+  {
+    name: 'Dra. Jackeline Lissbeth Flores Hernández',
+    specialty: 'Ginecología Obstetra',
+    image: require('../../assets/images/Dr2.jpg'),
+  },
+];
+
 export default function AppointmentScreen() {
-  const [selectedDate, setSelectedDate] = useState('');
-  const [appointments, setAppointments] = useState<string[]>([]);
   const navigation = useNavigation();
+  const [search, setSearch] = useState('');
+  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [confirmedAppointments, setConfirmedAppointments] = useState<
+    { doctor: string; date: string }[]
+  >([]);
+
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(search.toLowerCase()) ||
+    doctor.specialty.toLowerCase().includes(search.toLowerCase())
+  );
 
   const handleDayPress = (day: any) => {
     setSelectedDate(day.dateString);
   };
 
-  const handleReserveAppointment = () => {
-    if (selectedDate && !appointments.includes(selectedDate)) {
-      setAppointments([...appointments, selectedDate]);
+  const handleConfirm = () => {
+    if (selectedDoctor && selectedDate) {
+      setConfirmedAppointments((prev) => [
+        ...prev,
+        { doctor: selectedDoctor.name, date: selectedDate },
+      ]);
+      setSelectedDoctor(null);
       setSelectedDate('');
+      setSearch('');
     }
-  };
-
-  const markedDates = {
-    ...appointments.reduce((acc, date) => {
-      acc[date] = { marked: true, dotColor: '#4CAF50' };
-      return acc;
-    }, {} as any),
-    ...(selectedDate && {
-      [selectedDate]: {
-        selected: true,
-        marked: true,
-        selectedColor: '#4CAF50',
-      },
-    }),
   };
 
   return (
@@ -39,30 +70,76 @@ export default function AppointmentScreen() {
         <Text style={styles.emergencyText}>Llamada de Emergencia 134</Text>
       </TouchableOpacity>
 
+      {/* Paso 1: Selección del doctor */}
       <View style={styles.card}>
-        <Text style={styles.stepTitle}>Paso 1: Selecciona el Día</Text>
-        <Calendar
-          onDayPress={handleDayPress}
-          markedDates={markedDates}
-          minDate={new Date().toISOString().split('T')[0]}
+        <Text style={styles.stepTitle}>Paso 1: Selecciona al Especialista</Text>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Buscar por nombre o especialidad..."
+          placeholderTextColor="#888"
+          value={search}
+          onChangeText={setSearch}
         />
-        <TouchableOpacity style={styles.submitButton} onPress={handleReserveAppointment}>
-          <Text style={styles.submitText}>Reservar Cita</Text>
-        </TouchableOpacity>
+        {filteredDoctors.map((doctor, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.doctorCard,
+              selectedDoctor?.name === doctor.name && styles.selectedDoctor,
+            ]}
+            onPress={() => setSelectedDoctor(doctor)}
+          >
+            <Image source={doctor.image} style={styles.avatar} />
+            <View>
+              <Text style={styles.name}>{doctor.name}</Text>
+              <Text style={styles.specialty}>{doctor.specialty}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.stepTitle}>Citas Reservadas</Text>
-        {appointments.length === 0 ? (
-          <Text style={styles.text}>No hay citas reservadas aún.</Text>
-        ) : (
-          appointments.map((date, index) => (
-            <View key={index} style={styles.appointment}>
-              <Text style={styles.text}>📅 {date}</Text>
+      {/* Paso 2: Selección de fecha */}
+      {selectedDoctor && (
+        <View style={styles.card}>
+          <Text style={styles.stepTitle}>Paso 2: Selecciona el Día</Text>
+          <Calendar
+            onDayPress={handleDayPress}
+            markedDates={{
+              ...(selectedDate && {
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: '#4CAF50',
+                },
+              }),
+            }}
+            minDate={new Date().toISOString().split('T')[0]}
+          />
+        </View>
+      )}
+
+      {/* Confirmación */}
+      {selectedDoctor && selectedDate && (
+        <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
+          <Text style={styles.confirmText}>Solicitar Cita</Text>
+        </TouchableOpacity>
+      )}
+
+      {/* Lista de citas confirmadas */}
+      {confirmedAppointments.length > 0 && (
+        <View style={styles.card}>
+          <Text style={styles.stepTitle}>✅ Citas Confirmadas</Text>
+          {confirmedAppointments.map((appt, index) => (
+            <View key={index} style={{ marginBottom: 8 }}>
+              <Text style={styles.text}>
+                Cita con <Text style={{ fontWeight: 'bold' }}>{appt.doctor}</Text>
+              </Text>
+              <Text style={styles.text}>
+                Fecha: <Text style={{ fontWeight: 'bold' }}>{appt.date}</Text>
+              </Text>
             </View>
-          ))
-        )}
-      </View>
+          ))}
+        </View>
+      )}
 
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Text style={styles.backText}>Volver</Text>
@@ -94,11 +171,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
   stepTitle: {
     fontSize: 18,
@@ -106,25 +178,52 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     color: '#1f2a44',
   },
+  searchBar: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 16,
+    marginBottom: 12,
+  },
+  doctorCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eee',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+  },
+  selectedDoctor: {
+    backgroundColor: '#c8e6c9',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1f2a44',
+  },
+  specialty: {
+    fontSize: 14,
+    color: '#555',
+  },
   text: {
     fontSize: 16,
     color: '#555',
     marginBottom: 4,
   },
-  appointment: {
-    backgroundColor: '#e0f7fa',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 8,
-  },
-  submitButton: {
+  confirmButton: {
     backgroundColor: '#4CAF50',
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 16,
+    marginBottom: 20,
   },
-  submitText: {
+  confirmText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
@@ -134,7 +233,6 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 10,
     marginBottom: 20,
   },
   backText: {
@@ -143,3 +241,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
