@@ -8,10 +8,16 @@ import {
   Image,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
+  const router = useRouter();
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 60 }}
+    >
       {/* Bienvenida con ícono */}
       <View style={styles.welcomeCard}>
         <Image
@@ -27,7 +33,7 @@ export default function ProfileScreen() {
         <InfoRow label="Dui" value="12345678-9" />
         <InfoRow label="Fecha de Nacimiento" value="10/04/2001" />
         <InfoRow label="Sexo" value="Masculino" />
-        <EditIcon />
+        <EditIcon onPress={() => router.push('/editar-datos-importantes')} />
       </View>
 
       {/* Sección: Datos Complementarios */}
@@ -38,7 +44,7 @@ export default function ProfileScreen() {
         <InfoRow label="Tipo de Sangre" value="O+" />
         <InfoRow label="Dirección" value="Colonia Milagro de la Paz" />
         <InfoRow label="Teléfono" value="7682-8282" />
-        <EditIcon />
+        <EditIcon onPress={() => router.push('/editar-datos-complementarios')} />
       </View>
 
       {/* Sección: Información Importante */}
@@ -47,7 +53,7 @@ export default function ProfileScreen() {
         <InfoRow label="Alergias" value="(no proporcionado)" />
         <InfoRow label="Medicamentos" value="(no proporcionado)" />
         <InfoRow label="Condición Médica" value="(no proporcionado)" />
-        <EditIcon />
+        <EditIcon onPress={() => router.push('/editar-info-medica')} />
       </View>
 
       {/* Sección: Contacto de Emergencia */}
@@ -57,7 +63,7 @@ export default function ProfileScreen() {
         <InfoRow label="Parentesco" value="(no proporcionado)" />
         <InfoRow label="Tipo de Sangre" value="(no proporcionado)" />
         <InfoRow label="Teléfono" value="7682-8282" />
-        <EditIcon />
+        <EditIcon onPress={() => router.push('/editar-contacto-emergencia')} />
       </View>
     </ScrollView>
   );
@@ -77,31 +83,26 @@ const SectionHeader = ({ title }: { title: string }) => (
 );
 
 // Componente del ícono de edición
-const EditIcon = () => (
-  <TouchableOpacity style={styles.editIcon}>
+const EditIcon = ({ onPress }: { onPress: () => void }) => (
+  <TouchableOpacity style={styles.editIcon} onPress={onPress}>
     <Ionicons name="create-outline" size={18} color="#1f2a44" />
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#1f2a44',
     padding: 16,
   },
   welcomeCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
-  borderTopLeftRadius: 20,
-  borderTopRightRadius: 20,
-  paddingVertical: 40,       // ⬅️ Más alto
-  paddingHorizontal: 24,     // ⬅️ Más ancho
-  alignItems: 'center',
-  marginBottom: 24,
-  elevation: 3,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.1,
-  shadowRadius: 4,
+    padding: 12,
+    borderRadius: 20,
+    marginBottom: 20,
+    alignSelf: 'center',
+    paddingHorizontal: 16,
   },
   welcomeIcon: {
     width: 60,
@@ -109,10 +110,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   name: {
-      fontSize: 24,
-  fontWeight: 'bold',
-  textAlign: 'center',
-  color: '#1f2a44',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#1f2a44',
   },
   card: {
     backgroundColor: '#fff',
