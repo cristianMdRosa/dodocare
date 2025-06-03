@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Platform, Image } from 'react-native'; // 👈 Aquí se añadió Image
 import { Ionicons } from '@expo/vector-icons';
 
 import { HapticTab } from '@/components/HapticTab';
@@ -61,16 +60,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-      name="profile"
-     options={{
-    title: 'Perfil',
-    tabBarIcon: ({ color }) => (
-      <IconSymbol size={28} name="person" color={color} />
-    ),
-  }}
-/>
-a
-
+        name="profile"
+        options={{
+          title: 'Perfil',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="person" color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
