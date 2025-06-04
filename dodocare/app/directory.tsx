@@ -19,25 +19,25 @@ export default function DirectoryScreen() {
       name: 'Dr. Alexis Benitez Hernandez',
       specialty: 'Médico Internista',
       address: 'Clínica Central, Calle 5, San Miguel',
-      image: require('../../assets/images/Dr1.webp'),
+      image: require('../assets/images/Dr1.webp'),
     },
     {
       name: 'Dr. Gilberto Edmundo de Evián',
       specialty: 'Ginecólogo-Obstetra',
       address: 'Hospital de la Mujer, Av. Roosevelt, San Miguel',
-      image: require('../../assets/images/Dr2.jpg'),
+      image: require('../assets/images/Dr2.jpg'),
     },
     {
       name: 'Dr. Enrique Guerrero Perla',
       specialty: 'Cirujano General',
       address: 'Centro Médico El Salvador, Col. Médica',
-      image: require('../../assets/images/Dr3.jpg'),
+      image: require('../assets/images/Dr3.jpg'),
     },
     {
       name: 'Dra. Jackeline Lissbeth Flores Hernández',
       specialty: 'Ginecología Obstetra',
       address: 'Hospital Materno Infantil, Calle Rubén Darío',
-      image: require('../../assets/images/Dr2.jpg'),
+      image: require('../assets/images/Dr2.jpg'),
     },
   ];
 

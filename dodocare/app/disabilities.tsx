@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function DisabilitiesScreen() {
@@ -32,7 +38,7 @@ export default function DisabilitiesScreen() {
       <View style={styles.card}>
         <Text style={styles.title}>Incapacidad Médica</Text>
         <Text style={styles.label}>Paciente:</Text>
-        <Text style={styles.text}>Carlos Pérez Gómez</Text>
+        <Text style={styles.text}>Alejandro Rivas</Text>
 
         <Text style={styles.label}>Diagnóstico:</Text>
         <Text style={styles.text}>
@@ -58,7 +64,7 @@ export default function DisabilitiesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1f2a44', // Fondo azul oscuro
+    backgroundColor: '#1f2a44',
     padding: 16,
   },
   emergencyButton: {

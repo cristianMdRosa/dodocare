@@ -17,28 +17,28 @@ export default function MedicalPrescriptionsScreen() {
       doctor: 'Dr. Alexis Benitez Hernandez',
       medication: 'Amoxicilina 500 mg',
       instructions: 'Tomar 1 cápsula dos veces al día durante 7 días.',
-      image: require('../../assets/images/Dr1.webp'),
+      image: require('../assets/images/Dr1.webp'),
     },
     {
       doctor: 'Dr. Gilberto Edmundo de Evián',
       medication: '',
       instructions:
         'Tomar 1 tableta diaria vía oral durante el embarazo, hasta el próximo primer trimestre.',
-      image: require('../../assets/images/Dr2.jpg'),
+      image: require('../assets/images/Dr2.jpg'),
     },
     {
       doctor: 'Dr. Enrique Guerrero Perla',
       medication: 'Cefalexina 500 mg',
       instructions:
         'Tomar una tableta cada 8 horas durante 7 días para infecciones postoperatorias.',
-      image: require('../../assets/images/Dr3.jpg'),
+      image: require('../assets/images/Dr3.jpg'),
     },
     {
       doctor: 'Dra. Jackeline Lissbeth Flores Hernández',
       medication: 'Metronidazol vía oral',
       instructions:
         'Tomar una tableta cada ocho horas por cinco días para tratar infección de bacterias vaginales.',
-      image: require('../../assets/images/Dr2.jpg'),
+      image: require('../assets/images/Dr2.jpg'),
     },
   ];
 
