@@ -5,74 +5,89 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function DisabilitiesScreen() {
   const navigation = useNavigation();
 
+  const handleEmergencyCall = () => {
+    Linking.openURL('tel:134');
+  };
+
+  const disabilitiesData = [
+    {
+      paciente: 'Javier Alejandro Rivas',
+      diagnostico:
+        'Esguince de ligamento derecho. Se recomienda reposo por 10 días a partir del martes.',
+      medico: 'Dr. Juan Morales Rivera',
+      cedula: '6543210',
+    },
+    {
+      paciente: 'Alejandro Rivas',
+      diagnostico:
+        'Fractura en la pierna izquierda. Requiere reposo absoluto por 30 días desde el lunes.',
+      seguimiento: 'Revisión médica semanal hasta recuperación total.',
+      medico: 'Dra. Ana López Martínez',
+      cedula: '1234567',
+    },
+  ];
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Botón de emergencia */}
-      <TouchableOpacity style={styles.emergencyButton}>
+    <View style={{ flex: 1, backgroundColor: '#1f2a44' }}>
+      {/* Botón de emergencia fijo */}
+      <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyCall}>
         <Text style={styles.emergencyText}>Llamada de Emergencia 134</Text>
       </TouchableOpacity>
 
-      {/* Tarjeta 1 */}
-      <View style={styles.card}>
-        <Text style={styles.title}>Incapacidad Médica</Text>
-        <Text style={styles.label}>Paciente:</Text>
-        <Text style={styles.text}>Javier Alejandro Rivas</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        {disabilitiesData.map((item, index) => (
+          <View key={index} style={styles.card}>
+            <Text style={styles.title}>Incapacidad Médica</Text>
 
-        <Text style={styles.label}>Diagnóstico:</Text>
-        <Text style={styles.text}>
-          Esguince de ligamento derecho. Se recomienda reposo por 10 días a partir del martes.
-        </Text>
+            <Text style={styles.label}>Paciente:</Text>
+            <Text style={styles.text}>{item.paciente}</Text>
 
-        <Text style={styles.label}>Médico tratante:</Text>
-        <Text style={styles.text}>Dr. Juan Morales Rivera</Text>
-        <Text style={styles.text}>Cédula Profesional: 6543210</Text>
-      </View>
+            <Text style={styles.label}>Diagnóstico:</Text>
+            <Text style={styles.text}>{item.diagnostico}</Text>
 
-      {/* Tarjeta 2 */}
-      <View style={styles.card}>
-        <Text style={styles.title}>Incapacidad Médica</Text>
-        <Text style={styles.label}>Paciente:</Text>
-        <Text style={styles.text}>Alejandro Rivas</Text>
+            {item.seguimiento && (
+              <>
+                <Text style={styles.label}>Seguimiento:</Text>
+                <Text style={styles.text}>{item.seguimiento}</Text>
+              </>
+            )}
 
-        <Text style={styles.label}>Diagnóstico:</Text>
-        <Text style={styles.text}>
-          Fractura en la pierna izquierda. Requiere reposo absoluto por 30 días desde el lunes.
-        </Text>
+            <Text style={styles.label}>Médico tratante:</Text>
+            <Text style={styles.text}>{item.medico}</Text>
+            <Text style={styles.text}>Cédula Profesional: {item.cedula}</Text>
+          </View>
+        ))}
 
-        <Text style={styles.label}>Seguimiento:</Text>
-        <Text style={styles.text}>Revisión médica semanal hasta recuperación total.</Text>
-
-        <Text style={styles.label}>Médico tratante:</Text>
-        <Text style={styles.text}>Dra. Ana López Martínez</Text>
-        <Text style={styles.text}>Cédula Profesional: 1234567</Text>
-      </View>
-
-      {/* Botón Volver */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>Volver</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>Volver</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#1f2a44',
+    flexGrow: 1,
     padding: 16,
+    paddingTop: 80, // para que el scroll inicie debajo del botón fijo
   },
   emergencyButton: {
+    position: 'absolute',
+    top: 30,
+    right: 16,
     backgroundColor: '#4CAF50',
-    padding: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
+    zIndex: 10,
   },
   emergencyText: {
     color: '#fff',

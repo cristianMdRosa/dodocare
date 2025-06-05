@@ -7,12 +7,17 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Linking,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function DirectoryScreen() {
   const navigation = useNavigation();
   const [search, setSearch] = useState('');
+
+  const handleEmergencyCall = () => {
+    Linking.openURL('tel:134');
+  };
 
   const doctors = [
     {
@@ -47,60 +52,64 @@ export default function DirectoryScreen() {
   );
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Botón de emergencia */}
-      <TouchableOpacity style={styles.emergencyButton}>
+    <View style={{ flex: 1, backgroundColor: '#1f2a44' }}>
+      {/* Botón de emergencia flotante */}
+      <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyCall}>
         <Text style={styles.emergencyText}>Llamada de Emergencia 134</Text>
       </TouchableOpacity>
 
-      {/* Barra de búsqueda */}
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Escribe la especialidad o nombre..."
-        placeholderTextColor="#888"
-        value={search}
-        onChangeText={setSearch}
-      />
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Barra de búsqueda */}
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Escribe la especialidad o nombre..."
+          placeholderTextColor="#888"
+          value={search}
+          onChangeText={setSearch}
+        />
 
-      <Text style={styles.filterText}>Filtrado por: Especialidad o Nombre</Text>
+        <Text style={styles.filterText}>Filtrado por: Especialidad o Nombre</Text>
 
-      {/* Lista de doctores */}
-      {filteredDoctors.map((doctor, index) => (
-        <View key={index} style={styles.card}>
-          <Image source={doctor.image} style={styles.avatar} />
-          <View style={styles.info}>
-            <Text style={styles.name}>{doctor.name}</Text>
-            <Text style={styles.specialty}>{doctor.specialty}</Text>
-            <Text style={styles.address}>{doctor.address}</Text>
+        {/* Lista de doctores */}
+        {filteredDoctors.map((doctor, index) => (
+          <View key={index} style={styles.card}>
+            <Image source={doctor.image} style={styles.avatar} />
+            <View style={styles.info}>
+              <Text style={styles.name}>{doctor.name}</Text>
+              <Text style={styles.specialty}>{doctor.specialty}</Text>
+              <Text style={styles.address}>{doctor.address}</Text>
+            </View>
           </View>
-        </View>
-      ))}
+        ))}
 
-      {/* Botón Volver */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>Volver</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {/* Botón Volver */}
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>Volver</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#1f2a44',
     padding: 16,
+    paddingTop: 80,
   },
   emergencyButton: {
+    position: 'absolute',
+    top: 30,
+    right: 16,
     backgroundColor: '#4CAF50',
-    padding: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
+    zIndex: 10,
   },
   emergencyText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   searchBar: {
     backgroundColor: '#fff',
@@ -158,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   backText: {
     color: '#fff',

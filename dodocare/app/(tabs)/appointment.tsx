@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Linking,
 } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useNavigation } from '@react-navigation/native';
@@ -64,113 +65,132 @@ export default function AppointmentScreen() {
     }
   };
 
+  const handleEmergencyCall = () => {
+    Linking.openURL('tel:134');
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.emergencyButton}>
+    <View style={styles.outerContainer}>
+      <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyCall}>
         <Text style={styles.emergencyText}>Llamada de Emergencia 134</Text>
       </TouchableOpacity>
 
-      {/* Paso 1: Selección del doctor */}
-      <View style={styles.card}>
-        <Text style={styles.stepTitle}>Paso 1: Selecciona al Especialista</Text>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Buscar por nombre o especialidad..."
-          placeholderTextColor="#888"
-          value={search}
-          onChangeText={setSearch}
-        />
-        {filteredDoctors.map((doctor, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.doctorCard,
-              selectedDoctor?.name === doctor.name && styles.selectedDoctor,
-            ]}
-            onPress={() => setSelectedDoctor(doctor)}
-          >
-            <Image source={doctor.image} style={styles.avatar} />
-            <View>
-              <Text style={styles.name}>{doctor.name}</Text>
-              <Text style={styles.specialty}>{doctor.specialty}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* Paso 2: Selección de fecha */}
-      {selectedDoctor && (
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        {/* Paso 1: Selección del doctor */}
         <View style={styles.card}>
-          <Text style={styles.stepTitle}>Paso 2: Selecciona el Día</Text>
-          <Calendar
-            onDayPress={handleDayPress}
-            markedDates={{
-              ...(selectedDate && {
-                [selectedDate]: {
-                  selected: true,
-                  selectedColor: '#4CAF50',
-                },
-              }),
-            }}
-            minDate={new Date().toISOString().split('T')[0]}
+          <Text style={styles.stepTitle}>Paso 1: Selecciona al Especialista</Text>
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Buscar por nombre o especialidad..."
+            placeholderTextColor="#888"
+            value={search}
+            onChangeText={setSearch}
           />
-        </View>
-      )}
-
-      {/* Confirmación */}
-      {selectedDoctor && selectedDate && (
-        <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-          <Text style={styles.confirmText}>Solicitar Cita</Text>
-        </TouchableOpacity>
-      )}
-
-      {/* Lista de citas confirmadas */}
-      {confirmedAppointments.length > 0 && (
-        <View style={styles.card}>
-          <Text style={styles.stepTitle}>✅ Citas Confirmadas</Text>
-          {confirmedAppointments.map((appt, index) => (
-            <View key={index} style={{ marginBottom: 8 }}>
-              <Text style={styles.text}>
-                Cita con <Text style={{ fontWeight: 'bold' }}>{appt.doctor}</Text>
-              </Text>
-              <Text style={styles.text}>
-                Fecha: <Text style={{ fontWeight: 'bold' }}>{appt.date}</Text>
-              </Text>
-            </View>
+          {filteredDoctors.map((doctor, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.doctorCard,
+                selectedDoctor?.name === doctor.name && styles.selectedDoctor,
+              ]}
+              onPress={() => setSelectedDoctor(doctor)}
+            >
+              <Image source={doctor.image} style={styles.avatar} />
+              <View>
+                <Text style={styles.name}>{doctor.name}</Text>
+                <Text style={styles.specialty}>{doctor.specialty}</Text>
+              </View>
+            </TouchableOpacity>
           ))}
         </View>
-      )}
 
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>Volver</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {/* Paso 2: Selección de fecha */}
+        {selectedDoctor && (
+          <View style={styles.card}>
+            <Text style={styles.stepTitle}>Paso 2: Selecciona el Día</Text>
+            <Calendar
+              onDayPress={handleDayPress}
+              markedDates={{
+                ...(selectedDate && {
+                  [selectedDate]: {
+                    selected: true,
+                    selectedColor: '#4CAF50',
+                  },
+                }),
+              }}
+              minDate={new Date().toISOString().split('T')[0]}
+            />
+          </View>
+        )}
+
+        {/* Confirmación */}
+        {selectedDoctor && selectedDate && (
+          <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
+            <Text style={styles.confirmText}>Solicitar Cita</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Lista de citas confirmadas */}
+        <View style={styles.card}>
+          <Text style={styles.stepTitle}>✅ Citas Confirmadas</Text>
+          {confirmedAppointments.length > 0 ? (
+            confirmedAppointments.map((appt, index) => (
+              <View key={index} style={{ marginBottom: 8 }}>
+                <Text style={styles.text}>
+                  Cita con <Text style={{ fontWeight: 'bold' }}>{appt.doctor}</Text>
+                </Text>
+                <Text style={styles.text}>
+                  Fecha: <Text style={{ fontWeight: 'bold' }}>{appt.date}</Text>
+                </Text>
+              </View>
+            ))
+          ) : (
+            <Text style={styles.text}>No tenemos registros de citas reservadas.</Text>
+          )}
+        </View>
+
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>Volver</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  outerContainer: {
     flex: 1,
     backgroundColor: '#1f2a44',
-    padding: 16,
+    paddingTop: 60,
   },
-  emergencyButton: {
-    backgroundColor: '#4CAF50',
-    padding: 14,
-    borderRadius: 10,
+  contentContainer: {
+    flexGrow: 1,
     alignItems: 'center',
-    marginBottom: 20,
+    padding: 16,
+    marginTop: 30,
+    paddingBottom: 40,
+  },
+   emergencyButton: {
+    position: 'absolute',
+    top: 40, // Espacio desde el borde superior
+    right: 10,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    borderRadius: 10, // Menor o cuadrado
+    zIndex: 10,
   },
   emergencyText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   card: {
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
+    width: '100%',
   },
   stepTitle: {
     fontSize: 18,
@@ -184,6 +204,7 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     marginBottom: 12,
+    width: '100%',
   },
   doctorCard: {
     flexDirection: 'row',
@@ -192,6 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
+    width: '100%',
   },
   selectedDoctor: {
     backgroundColor: '#c8e6c9',
@@ -222,6 +244,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
+    width: '100%',
   },
   confirmText: {
     color: '#fff',
@@ -234,6 +257,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 20,
+    width: '100%',
   },
   backText: {
     color: '#fff',
@@ -241,4 +265,3 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
-

@@ -1,78 +1,93 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function HistoryScreen() {
   const navigation = useNavigation();
 
+  const handleEmergencyCall = () => {
+    Linking.openURL('tel:134');
+  };
+
   return (
-    <ScrollView style={styles.container}>
-      {/* Botón de emergencia */}
-      <TouchableOpacity style={styles.emergencyButton}>
+    <View style={{ flex: 1, backgroundColor: '#1f2a44' }}>
+      {/* Botón de emergencia en la esquina superior derecha */}
+      <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyCall}>
         <Text style={styles.emergencyText}>Llamada de Emergencia 134</Text>
       </TouchableOpacity>
 
-      {/* Tarjeta de historial */}
-      <View style={styles.card}>
-        <Text style={styles.title}>Historial Médico</Text>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Tarjeta de historial */}
+        <View style={styles.card}>
+          <Text style={styles.title}>Historial Médico</Text>
 
-        <Text style={styles.label}>Paciente:</Text>
-        <Text style={styles.text}>Javier Alejandro Rivas</Text>
+          <Text style={styles.label}>Paciente:</Text>
+          <Text style={styles.text}>Javier Alejandro Rivas</Text>
 
-        <Text style={styles.label}>Edad:</Text>
-        <Text style={styles.text}>22 años</Text>
+          <Text style={styles.label}>Edad:</Text>
+          <Text style={styles.text}>22 años</Text>
 
-        <Text style={styles.label}>Padecimientos:</Text>
-        <Text style={styles.text}>• Asma controlada</Text>
-        <Text style={styles.text}>• Migraña crónica</Text>
+          <Text style={styles.label}>Padecimientos:</Text>
+          <Text style={styles.text}>• Asma controlada</Text>
+          <Text style={styles.text}>• Migraña crónica</Text>
 
-        <Text style={styles.label}>Crisis asmáticas:</Text>
-        <Text style={styles.text}>Última crisis: 20/10/2025</Text>
-        <Text style={styles.text}>Frecuencia: Cada tres meses</Text>
+          <Text style={styles.label}>Crisis asmáticas:</Text>
+          <Text style={styles.text}>Última crisis: 20/10/2025</Text>
+          <Text style={styles.text}>Frecuencia: Cada tres meses</Text>
 
-        <Text style={styles.label}>Crisis migrañosas:</Text>
-        <Text style={styles.text}>Última crisis: 01/10/2025</Text>
-        <Text style={styles.text}>Frecuencia: Una vez al mes</Text>
+          <Text style={styles.label}>Crisis migrañosas:</Text>
+          <Text style={styles.text}>Última crisis: 01/10/2025</Text>
+          <Text style={styles.text}>Frecuencia: Una vez al mes</Text>
 
-        <Text style={styles.label}>Alergias:</Text>
-        <Text style={styles.text}>Penicilina</Text>
+          <Text style={styles.label}>Alergias:</Text>
+          <Text style={styles.text}>Penicilina</Text>
 
-        <Text style={styles.label}>Medicamentos:</Text>
-        <Text style={styles.text}>• Salbutamol, Omeprazol (2020)</Text>
-        <Text style={styles.text}>• Sumatriptán, Naproxeno (2024)</Text>
+          <Text style={styles.label}>Medicamentos:</Text>
+          <Text style={styles.text}>• Salbutamol, Omeprazol (2020)</Text>
+          <Text style={styles.text}>• Sumatriptán, Naproxeno (2024)</Text>
 
-        <Text style={styles.label}>Próxima cita:</Text>
-        <Text style={styles.text}>Lunes (fecha por confirmar)</Text>
+          <Text style={styles.label}>Próxima cita:</Text>
+          <Text style={styles.text}>Lunes (fecha por confirmar)</Text>
 
-        <Text style={styles.label}>Médico tratante:</Text>
-        <Text style={styles.text}>Dra. Paula Sánchez T.</Text>
-      </View>
+          <Text style={styles.label}>Médico tratante:</Text>
+          <Text style={styles.text}>Dra. Paula Sánchez T.</Text>
+        </View>
 
-      {/* Botón Volver */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backText}>Volver</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        {/* Botón Volver */}
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backText}>Volver</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#1f2a44', // Fondo azul oscuro
     padding: 16,
+    paddingTop: 80, // Espacio para evitar que se tape el contenido con el botón
   },
   emergencyButton: {
+    position: 'absolute',
+    top: 30,
+    right: 16,
     backgroundColor: '#4CAF50',
-    padding: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
     borderRadius: 10,
-    alignItems: 'center',
-    marginBottom: 20,
+    zIndex: 10,
   },
   emergencyText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 14,
   },
   card: {
     backgroundColor: '#fff',
@@ -106,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   backText: {
     color: '#fff',
