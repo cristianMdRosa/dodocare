@@ -1,58 +1,64 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { router } from 'expo-router';
-import Background from '../assets/svg/Background'; // Ajusta esta ruta si es diferente
+import Background from '../assets/svg/Background';
 
 export default function Register() {
   return (
-    <View style={{ flex: 1 }}>
-      <Background style={StyleSheet.absoluteFill} />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={60} // Ajusta este valor según tu header
+    >
+      <View style={{ flex: 1 }}>
+        <Background style={StyleSheet.absoluteFill} />
 
-    <View style={styles.container}>
-       <Image 
-                source={require('@/assets/images/logododo.jpeg')} 
-                style={styles.logo}
-                resizeMode="cover"
-              />
+        <View style={styles.container}>
+          <Image 
+            source={require('@/assets/images/logododo.jpeg')} 
+            style={styles.logo}
+            resizeMode="cover"
+          />
 
-      <Text style={styles.title}>Crear Cuenta</Text>
+          <Text style={styles.title}>Crear Cuenta</Text>
 
-      {/* Campos del formulario */}
-      <TextInput
-        placeholder="Nombre"
-        style={styles.input}
-        placeholderTextColor="#999"
-      />
-      
-      <TextInput
-        placeholder="Correo electrónico"
-        style={styles.input}
-        placeholderTextColor="#999"
-        keyboardType="email-address"
-      />
-      
-      <TextInput
-        placeholder="Contraseña"
-        style={styles.input}
-        placeholderTextColor="#999"
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.backButton}
-                onPress={() => router.push('/login-form')}>
-                <Text style={styles.backButtonText}>¿Ya tienes cuenta? Inicia Sesión</Text>
-              </TouchableOpacity>
+          {/* Campos del formulario */}
+          <TextInput
+            placeholder="Nombre"
+            style={styles.input}
+            placeholderTextColor="#999"
+          />
+          
+          <TextInput
+            placeholder="Correo electrónico"
+            style={styles.input}
+            placeholderTextColor="#999"
+            keyboardType="email-address"
+          />
+          
+          <TextInput
+            placeholder="Contraseña"
+            style={styles.input}
+            placeholderTextColor="#999"
+            secureTextEntry
+          />
+          <TouchableOpacity style={styles.backButton}
+            onPress={() => router.push('/login-form')}>
+            <Text style={styles.backButtonText}>¿Ya tienes cuenta? Inicia Sesión</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Registrarse</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Registrarse</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.backButton}
-        onPress={() => router.replace('/login')} // Cambiado a replace
-      >
-        <Text style={styles.backButtonText}>Volver al inicio</Text>
-      </TouchableOpacity>
-    </View>
-    </View>
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => router.replace('/login')} // Cambiado a replace
+          >
+            <Text style={styles.backButtonText}>Volver al inicio</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -64,8 +70,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 240,
-    height: 340,
-    marginBottom: 45,
+    height: 280,
+    marginBottom: 80,
     alignSelf: 'flex-start',
     borderRadius: 300,
     borderWidth: 3,
@@ -90,7 +96,7 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 10,
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 15,
   },
   buttonText: {
     color: '#fff',

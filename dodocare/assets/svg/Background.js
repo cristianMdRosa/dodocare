@@ -14,7 +14,7 @@ const Background = (props) => (
     <G clipPath="url(#clip0_269_380)">
       <Rect width="412" height="917" fill="white" />
       <Rect x="-98" y="-36" width="456" height="448" fill="url(#pattern0_269_380)" />
-      <Path d="M0 427.259L231 382.466L412 180V917H0V427.259Z" fill="#2D3748" />
+      <Path d="M0 367.259L231 322.466L412 120V917H0V367.259Z" fill="#2D3748" />
     </G>
   </Svg>
 );
