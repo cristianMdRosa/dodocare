@@ -3,10 +3,29 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { router } from 'expo-router';
 import Background from '../../assets/svg/Background2';
 
+// ✅ Tipo explícito para rutas válidas
+type ValidRoutes =
+  | '/appointment'
+  | '/history'
+  | '/directory'
+  | '/prescriptions'
+  | '/disabilities'
+  | '/hospital-info';
+
 export default function Home() {
   const handleLogout = () => {
     router.replace('/login');
   };
+
+  // ✅ Arreglo tipado con rutas válidas
+  const services: { label: string; route: ValidRoutes }[] = [
+    { label: 'Agendar cita', route: '/appointment' },
+    { label: 'Historial médico', route: '/history' },
+    { label: 'Directorio médico', route: '/directory' },
+    { label: 'Recetas médicas', route: '/prescriptions' },
+    { label: 'Incapacidades', route: '/disabilities' },
+    { label: 'Información del hospital', route: '/hospital-info' },
+  ];
 
   return (
     <View style={{ flex: 1 }}>
@@ -21,7 +40,7 @@ export default function Home() {
         {/* Bienvenida con ícono */}
         <View style={styles.welcomeCard}>
           <Image
-            source={require('@/assets/images/WelcomeIcon.png')} //Usa aquí tu ícono
+            source={require('@/assets/images/WelcomeIcon.png')}
             style={styles.welcomeIcon}
           />
           <Text style={styles.welcomeText}>
@@ -31,17 +50,15 @@ export default function Home() {
 
         <Text style={styles.subTitle}>Servicios</Text>
 
+        {/* ✅ Navegación segura con rutas tipadas */}
         <View style={styles.grid}>
-          {[
-            'Agendar cita',
-            'Historial médico',
-            'Directorio médico',
-            'Recetas médicas',
-            'Incapacidades',
-            'Información del hospital',
-          ].map((item, index) => (
-            <TouchableOpacity key={index} style={styles.serviceBox}>
-              <Text style={styles.boxText}>{item}</Text>
+          {services.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.serviceBox}
+              onPress={() => router.push(item.route)}
+            >
+              <Text style={styles.boxText}>{item.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -69,8 +86,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#ffffff',
   },
-
-  // Nuevo estilo para tarjeta de bienvenida
   welcomeCard: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -92,7 +107,6 @@ const styles = StyleSheet.create({
     color: '#000',
     lineHeight: 22,
   },
-
   subTitle: {
     fontSize: 18,
     fontWeight: 'bold',
