@@ -47,7 +47,7 @@ export default function Home() {
         </View>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutText}>Salir</Text>
+          <Text style={styles.logoutText}>SALIR</Text>
         </TouchableOpacity>
       </View>
     </View>
