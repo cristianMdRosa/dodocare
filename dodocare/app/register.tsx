@@ -25,7 +25,7 @@ export default function Register() {
       return;
     }
   else {
-      var InsertAPIURL="http://192.168.0.13:80/api/conexion.php"
+      var InsertAPIURL="http://192.168.0.10:80/api/conexion.php"
       var headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

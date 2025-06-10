@@ -1,9 +1,42 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { router } from 'expo-router';
 import Background from '../assets/svg/Background'; // Ajusta la ruta si es necesario
 
 export default function LoginScreen() {
+  const [correo, setCorreo] = useState('');
+  const [contrasena, setContrasena] = useState('');
+
+  const handleLogin = async () => {
+    if (!correo || !contrasena) {
+      Alert.alert('Error', 'Por favor, ingresa tu correo y contraseña.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://192.168.0.10:80/api/login.php', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          correo: correo,
+          contrasena: contrasena
+        })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        router.replace('/(tabs)/home'); // Ajusta la ruta a tu home
+      } else {
+        Alert.alert('Error', 'Correo o contraseña incorrectos.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo conectar al servidor.');
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <Background style={StyleSheet.absoluteFill} />
@@ -27,6 +60,8 @@ export default function LoginScreen() {
             style={styles.input}
             placeholderTextColor="#999"
             keyboardType="email-address"
+            value={correo}
+            onChangeText={setCorreo}
           />
 
           <TextInput
@@ -34,13 +69,19 @@ export default function LoginScreen() {
             style={styles.input}
             placeholderTextColor="#999"
             secureTextEntry
+            value={contrasena}
+            onChangeText={setContrasena}
           />
+           <TouchableOpacity style={styles.secondaryButton}
+            onPress={() => router.push('/forgot-password')}>
+            <Text style={styles.secondaryButtonText}>¿Olvidaste tu contraseña? Cambiar Contraseña</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.secondaryButton}
             onPress={() => router.push('/register')}>
             <Text style={styles.secondaryButtonText}>¿Aún no tienes cuenta? Crear Cuenta</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Ingresar</Text>
           </TouchableOpacity>
 
