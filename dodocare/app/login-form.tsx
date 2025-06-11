@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { router } from 'expo-router';
 import Background from '../assets/svg/Background'; // Ajusta la ruta si es necesario
+import { useAuth } from './AuthContext'; // Ajusta la ruta si es necesario
 
 export default function LoginScreen() {
   const [correo, setCorreo] = useState('');
   const [contrasena, setContrasena] = useState('');
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     if (!correo || !contrasena) {
@@ -28,6 +30,7 @@ export default function LoginScreen() {
       const data = await response.json();
 
       if (data.success) {
+        login();
         router.replace('/(tabs)/home'); // Ajusta la ruta a tu home
       } else {
         Alert.alert('Error', 'Correo o contraseña incorrectos.');

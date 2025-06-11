@@ -1,7 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { router } from 'expo-router';
+import { useAuth } from './AuthContext'; // Ajusta la ruta si es necesario
 
 export default function LoginScreen() {
+  const { loginAsGuest } = useAuth();
+
   return (
     <View style={styles.container}>
       {/* Fondo superior */}
@@ -18,7 +21,7 @@ export default function LoginScreen() {
           />
         </View>
 
-<Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
+        <Text style={styles.welcomeText}>¡Bienvenido/a!</Text>
 
         <TouchableOpacity 
           style={styles.primaryButton}
@@ -33,9 +36,12 @@ export default function LoginScreen() {
         >
           <Text style={styles.buttonText}>Crear Cuenta</Text>
         </TouchableOpacity>
- <TouchableOpacity 
+        <TouchableOpacity 
           style={styles.guestButton}
-          onPress={() => router.replace('/(tabs)/home')}
+          onPress={() => {
+            loginAsGuest();
+            router.replace('/(tabs)/home');
+          }}
         >
           <Text style={styles.guestButtonText}>Ingresar como invitado</Text>
         </TouchableOpacity>
@@ -66,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
   },
-whiteBox: {
+  whiteBox: {
     backgroundColor: "white",
     width: "90%",
     padding: 20,

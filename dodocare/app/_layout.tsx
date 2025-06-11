@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { AuthProvider } from './AuthContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -16,7 +17,8 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <AuthProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         {/* Pantalla de redirección inicial (index.tsx) */}
         <Stack.Screen 
@@ -73,6 +75,7 @@ export default function RootLayout() {
         />
       </Stack>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
